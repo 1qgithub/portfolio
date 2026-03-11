@@ -2,7 +2,7 @@
 
 一个优雅的个人作品集网站，用于展示你的项目、技能和联系方式。
 
-![Portfolio Preview](https://via.placeholder.com/800x400?text=Portfolio+Preview)
+![Portfolio Preview](https://1qgithub.github.io/portfolio/800x400?text=Portfolio+Preview)
 
 ## 特性
 
