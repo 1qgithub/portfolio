@@ -101,7 +101,6 @@ if (heroTitle) {
         }
     }
     
-    // 延迟开始打字效果
     setTimeout(typeWriter, 500);
 }
 
@@ -111,13 +110,11 @@ const projectCards = document.querySelectorAll('.project-card');
 
 categoryBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        // 更新按钮状态
         categoryBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
         const category = btn.dataset.category;
         
-        // 筛选项目
         projectCards.forEach(card => {
             if (category === 'all') {
                 card.classList.remove('hidden');
@@ -141,6 +138,8 @@ const projectDemos = {
     }
 };
 
+let currentFullscreenElement = null;
+
 function openProjectDemo(projectId) {
     const modal = document.getElementById('demo-modal');
     const iframe = document.getElementById('demo-iframe');
@@ -152,9 +151,34 @@ function openProjectDemo(projectId) {
     if (project) {
         title.textContent = project.title;
         iframe.src = project.url;
-        fullscreenBtn.href = project.url;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // 设置全屏按钮功能
+        fullscreenBtn.onclick = function(e) {
+            e.preventDefault();
+            openFullscreen(project.url);
+        };
+    }
+}
+
+// 打开全屏窗口
+function openFullscreen(url) {
+    // 关闭当前弹窗
+    closeProjectDemo();
+    
+    // 打开新窗口
+    const fullscreenWindow = window.open(
+        url,
+        'project-demo-fullscreen',
+        'width=' + screen.width + ',height=' + screen.height + ',fullscreen=yes,toolbar=no,menubar=no,location=no,status=no'
+    );
+    
+    // 尝试请求全屏
+    if (fullscreenWindow) {
+        fullscreenWindow.moveTo(0, 0);
+        fullscreenWindow.resizeTo(screen.width, screen.height);
+        fullscreenWindow.focus();
     }
 }
 
@@ -190,7 +214,7 @@ hamburger?.addEventListener('click', () => {
     navLinks.classList.toggle('active');
 });
 
-// 项目卡片悬停效果增强
+// 项目卡片悬停效果
 document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('mouseenter', function() {
         this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.15)';

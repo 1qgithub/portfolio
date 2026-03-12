@@ -1,0 +1,4 @@
+usage: server.py [-h] [--cgi] [-b ADDRESS] [-d DIRECTORY] [-p VERSION] [port]
+usage: server.py [-h] [--cgi] [-b ADDRESS] [-d DIRECTORY] [-p VERSION] [port]
+server.py: error: unrecognized arguments: 8000 3
+server.py: error: unrecognized arguments: 8000 3
