@@ -6,6 +6,7 @@
     <title>我的作品集 | Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- 导航栏 -->
@@ -18,6 +19,11 @@
             <li><a href="#projects">项目</a></li>
             <li><a href="#contact">联系</a></li>
         </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 
     <!-- 首页区域 -->
@@ -97,8 +103,40 @@
     <section id="projects" class="projects">
         <div class="container">
             <h2 class="section-title">项目作品</h2>
+            
+            <!-- 项目分类标签 -->
+            <div class="project-categories">
+                <button class="category-btn active" data-category="all">全部</button>
+                <button class="category-btn" data-category="webapp">Web应用</button>
+                <button class="category-btn" data-category="webdesign">网页设计</button>
+                <button class="category-btn" data-category="ai">AI项目</button>
+            </div>
+            
             <div class="projects-grid">
-                <div class="project-card">
+                <!-- 网页设计作品 - AI公司官网 -->
+                <div class="project-card webdesign featured" data-project="ai-website">
+                    <div class="project-image webdesign-bg">
+                        <div class="earth-mini"></div>
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-badge">网页设计</div>
+                        <h3>NeuralEarth AI 官网</h3>
+                        <p>为AI公司设计的官方网站，采用黑白灰科技风格，包含震撼的3D地球动画、中英文双语切换、响应式布局等特性。</p>
+                        <div class="project-tags">
+                            <span>HTML5</span>
+                            <span>CSS3</span>
+                            <span>JavaScript</span>
+                            <span>响应式</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/portfolio/tree/main/projects/ai-website" class="btn-small" target="_blank"><i class="fab fa-github"></i> 代码</a>
+                            <a href="#" class="btn-small btn-demo" onclick="openProjectDemo('ai-website'); return false;"><i class="fas fa-external-link-alt"></i> 演示</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card webapp">
                     <div class="project-image">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
@@ -117,7 +155,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card webapp">
                     <div class="project-image">
                         <i class="fas fa-tasks"></i>
                     </div>
@@ -136,11 +174,12 @@
                     </div>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-image">
+                <div class="project-card ai">
+                    <div class="project-image ai-bg">
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-content">
+                        <div class="project-badge ai">AI</div>
                         <h3>AI助手应用</h3>
                         <p>基于大语言模型的智能对话应用，支持多轮对话和上下文理解。</p>
                         <div class="project-tags">
@@ -157,6 +196,26 @@
             </div>
         </div>
     </section>
+
+    <!-- 项目演示弹窗 -->
+    <div id="demo-modal" class="demo-modal">
+        <div class="demo-modal-content">
+            <div class="demo-modal-header">
+                <h3 id="demo-title">项目演示</h3>
+                <button class="demo-close" onclick="closeProjectDemo()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="demo-modal-body">
+                <iframe id="demo-iframe" src="" frameborder="0"></iframe>
+            </div>
+            <div class="demo-modal-footer">
+                <a id="demo-fullscreen" href="#" target="_blank" class="btn-small">
+                    <i class="fas fa-expand"></i> 全屏查看
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- 联系方式 -->
     <section id="contact" class="contact">

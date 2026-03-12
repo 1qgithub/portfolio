@@ -1,0 +1,786 @@
+/* ========================================
+   NeuralEarth AI - JavaScript
+   中英文切换 + 交互与动画效果
+   ======================================== */
+
+// 多语言配置
+const translations = {
+    zh: {
+        // 导航
+        'nav.home': '首页',
+        'nav.about': '关于我们',
+        'nav.technology': '核心技术',
+        'nav.products': '产品服务',
+        'nav.contact': '联系我们',
+        'nav.demo': '预约演示',
+        'nav.start': '立即开始',
+        
+        // 英雄区域
+        'hero.badge': '下一代人工智能解决方案',
+        'hero.title1': '智连全球',
+        'hero.title2': '创见未来',
+        'hero.description': 'NeuralEarth AI 致力于突破人工智能边界，通过先进的深度学习与神经网络技术，为全球企业提供智能化转型解决方案，引领数字时代的创新浪潮。',
+        'hero.explore': '探索更多',
+        'hero.watch': '观看介绍',
+        'hero.stat1': '全球客户',
+        'hero.stat2': '系统可用率',
+        'hero.stat3': '国家覆盖',
+        'hero.scroll': '向下滚动探索',
+        
+        // 关于我们
+        'about.title': '重新定义人工智能的边界',
+        'about.subtitle': '我们汇聚全球顶尖AI人才，以突破性技术创新推动产业变革',
+        'about.card1.title': '深度学习',
+        'about.card1.desc': '基于最新神经网络架构，实现更高效、更精准的模型训练与推理能力',
+        'about.card2.title': '全球部署',
+        'about.card2.desc': '遍布全球的计算节点，确保毫秒级响应，支持多地域智能调度',
+        'about.card3.title': '安全可靠',
+        'about.card3.desc': '企业级安全架构，端到端加密，满足金融级数据安全标准',
+        'about.card4.title': '无缝集成',
+        'about.card4.desc': '丰富的API接口与SDK，快速融入现有业务系统，降低迁移成本',
+        
+        // 核心技术
+        'tech.title': '前沿技术，卓越性能',
+        'tech.subtitle': '自主研发的核心算法，引领行业技术革新',
+        'tech.item1.title': '自注意力机制优化',
+        'tech.item1.desc': '创新的稀疏注意力算法，在保持模型性能的同时，大幅降低计算复杂度',
+        'tech.item2.title': '多模态融合架构',
+        'tech.item2.desc': '统一处理文本、图像、语音等多种数据类型，实现跨模态理解与生成',
+        'tech.item3.title': '边缘智能计算',
+        'tech.item3.desc': '轻量化模型设计，支持在边缘设备上实现实时AI推理，降低延迟与成本',
+        'tech.item4.title': '持续学习框架',
+        'tech.item4.desc': '模型在线更新能力，支持增量学习，确保AI系统持续进化优化',
+        
+        // 产品服务
+        'products.title': '全场景AI解决方案',
+        'products.subtitle': '从基础能力到行业应用，满足多样化智能化需求',
+        'products.detail': '了解详情',
+        'products.p1.desc': '企业级智能对话引擎，支持多轮对话、情感分析、知识问答，打造智能客服新体验',
+        'products.p1.f1': '多语言支持',
+        'products.p1.f2': '意图识别',
+        'products.p1.f3': '知识图谱',
+        'products.p2.desc': '计算机视觉解决方案，覆盖图像识别、目标检测、视频分析等场景',
+        'products.p2.f1': '实时检测',
+        'products.p2.f2': 'OCR识别',
+        'products.p2.f3': '视频理解',
+        'products.p3.desc': '智能数据分析平台，自动发现数据价值，生成可视化洞察报告',
+        'products.p3.f1': '自动分析',
+        'products.p3.f2': '异常检测',
+        'products.p3.f3': '预测建模',
+        'products.p4.desc': '自动化机器学习平台，无需编码即可训练、部署和管理AI模型',
+        'products.p4.f1': '可视化建模',
+        'products.p4.f2': '自动调参',
+        'products.p4.f3': '一键部署',
+        
+        // 客户案例
+        'cases.title': '全球客户信赖之选',
+        'cases.subtitle': '已为超过500家企业提供AI赋能服务',
+        'cases.c1.text': 'NeuralEarth AI的解决方案帮助我们实现了客服自动化，响应效率提升300%，客户满意度显著提高。',
+        'cases.c1.name': '张明远',
+        'cases.c1.title': '某大型电商平台 CTO',
+        'cases.c2.text': 'VisionAI Suite在产线质检中的应用，将缺陷检出率提升至99.9%，年节约成本超过千万。',
+        'cases.c2.name': '李建国',
+        'cases.c2.title': '某知名制造企业 生产总监',
+        'cases.c3.text': 'DataInsight Platform为我们挖掘了海量数据价值，决策效率大幅提升，真正实现了数据驱动。',
+        'cases.c3.name': '王思雨',
+        'cases.c3.title': '某金融机构 数据总监',
+        
+        // 联系我们
+        'contact.title': '开启您的AI之旅',
+        'contact.subtitle': '无论您是想了解产品详情，还是探讨定制化解决方案，我们都期待与您交流。',
+        'contact.email': '邮箱',
+        'contact.phone': '电话',
+        'contact.address': '地址',
+        'contact.addressValue': '北京市海淀区中关村科技园',
+        
+        // 表单
+        'form.name': '您的姓名',
+        'form.email': '电子邮箱',
+        'form.company': '公司名称',
+        'form.message': '您的需求',
+        'form.submit': '发送消息',
+        
+        // 页脚
+        'footer.desc': '智连全球，创见未来。NeuralEarth AI致力于为全球企业提供领先的人工智能解决方案。',
+        'footer.products': '产品服务',
+        'footer.solutions': '解决方案',
+        'footer.sol1': '智能客服',
+        'footer.sol2': '智慧零售',
+        'footer.sol3': '智能制造',
+        'footer.sol4': '金融科技',
+        'footer.about': '关于我们',
+        'footer.about1': '公司介绍',
+        'footer.about2': '新闻动态',
+        'footer.about3': '加入我们',
+        'footer.about4': '联系我们',
+        'footer.developers': '开发者',
+        'footer.dev1': 'API文档',
+        'footer.dev2': 'SDK下载',
+        'footer.dev3': '技术博客',
+        'footer.dev4': '开源项目',
+        'footer.privacy': '隐私政策',
+        'footer.terms': '服务条款',
+        'footer.cookies': 'Cookie设置'
+    },
+    en: {
+        // Navigation
+        'nav.home': 'Home',
+        'nav.about': 'About Us',
+        'nav.technology': 'Technology',
+        'nav.products': 'Products',
+        'nav.contact': 'Contact',
+        'nav.demo': 'Book Demo',
+        'nav.start': 'Get Started',
+        
+        // Hero
+        'hero.badge': 'Next-Generation AI Solutions',
+        'hero.title1': 'Connect Globally',
+        'hero.title2': 'Create the Future',
+        'hero.description': 'NeuralEarth AI is dedicated to pushing the boundaries of artificial intelligence. Through advanced deep learning and neural network technologies, we provide intelligent transformation solutions for enterprises worldwide, leading the wave of innovation in the digital era.',
+        'hero.explore': 'Explore More',
+        'hero.watch': 'Watch Video',
+        'hero.stat1': 'Global Clients',
+        'hero.stat2': 'System Uptime',
+        'hero.stat3': 'Countries',
+        'hero.scroll': 'Scroll to Explore',
+        
+        // About
+        'about.title': 'Redefining the Boundaries of AI',
+        'about.subtitle': 'Bringing together top AI talents worldwide to drive industry transformation through breakthrough technological innovation',
+        'about.card1.title': 'Deep Learning',
+        'about.card1.desc': 'Based on the latest neural network architectures, achieving more efficient and accurate model training and inference capabilities',
+        'about.card2.title': 'Global Deployment',
+        'about.card2.desc': 'Computing nodes distributed worldwide ensure millisecond-level response with intelligent multi-region scheduling',
+        'about.card3.title': 'Secure & Reliable',
+        'about.card3.desc': 'Enterprise-grade security architecture with end-to-end encryption meeting financial-grade data security standards',
+        'about.card4.title': 'Seamless Integration',
+        'about.card4.desc': 'Rich API interfaces and SDKs for quick integration into existing business systems with reduced migration costs',
+        
+        // Technology
+        'tech.title': 'Cutting-Edge Technology, Superior Performance',
+        'tech.subtitle': 'Proprietary core algorithms leading industry innovation',
+        'tech.item1.title': 'Optimized Self-Attention Mechanism',
+        'tech.item1.desc': 'Innovative sparse attention algorithms that significantly reduce computational complexity while maintaining model performance',
+        'tech.item2.title': 'Multi-Modal Fusion Architecture',
+        'tech.item2.desc': 'Unified processing of text, image, audio and other data types enabling cross-modal understanding and generation',
+        'tech.item3.title': 'Edge Intelligence Computing',
+        'tech.item3.desc': 'Lightweight model design supporting real-time AI inference on edge devices, reducing latency and costs',
+        'tech.item4.title': 'Continuous Learning Framework',
+        'tech.item4.desc': 'Online model updating capability supporting incremental learning ensuring continuous AI system optimization',
+        
+        // Products
+        'products.title': 'Comprehensive AI Solutions',
+        'products.subtitle': 'From foundational capabilities to industry applications, meeting diverse intelligent needs',
+        'products.detail': 'Learn More',
+        'products.p1.desc': 'Enterprise-grade intelligent dialogue engine supporting multi-turn conversations, sentiment analysis, and knowledge Q&A for enhanced customer service',
+        'products.p1.f1': 'Multi-language Support',
+        'products.p1.f2': 'Intent Recognition',
+        'products.p1.f3': 'Knowledge Graph',
+        'products.p2.desc': 'Computer vision solutions covering image recognition, object detection, video analysis and more',
+        'products.p2.f1': 'Real-time Detection',
+        'products.p2.f2': 'OCR Recognition',
+        'products.p2.f3': 'Video Understanding',
+        'products.p3.desc': 'Intelligent data analysis platform automatically discovering data value and generating visual insight reports',
+        'products.p3.f1': 'Auto Analysis',
+        'products.p3.f2': 'Anomaly Detection',
+        'products.p3.f3': 'Predictive Modeling',
+        'products.p4.desc': 'Automated machine learning platform for training, deploying and managing AI models without coding',
+        'products.p4.f1': 'Visual Modeling',
+        'products.p4.f2': 'Auto Tuning',
+        'products.p4.f3': 'One-Click Deploy',
+        
+        // Cases
+        'cases.title': 'Trusted by Global Clients',
+        'cases.subtitle': 'Empowering over 500 enterprises with AI services',
+        'cases.c1.text': 'NeuralEarth AI\'s solution helped us automate customer service, improving response efficiency by 300% with significantly higher customer satisfaction.',
+        'cases.c1.name': 'Michael Zhang',
+        'cases.c1.title': 'CTO, Major E-commerce Platform',
+        'cases.c2.text': 'VisionAI Suite in production line quality inspection improved defect detection to 99.9%, saving over 10 million annually.',
+        'cases.c2.name': 'Jian Guo Li',
+        'cases.c2.title': 'Production Director, Leading Manufacturer',
+        'cases.c3.text': 'DataInsight Platform unlocked massive data value for us, dramatically improving decision efficiency and achieving true data-driven operations.',
+        'cases.c3.name': 'Sarah Wang',
+        'cases.c3.title': 'Data Director, Financial Institution',
+        
+        // Contact
+        'contact.title': 'Start Your AI Journey',
+        'contact.subtitle': 'Whether you want to learn about product details or explore customized solutions, we look forward to connecting with you.',
+        'contact.email': 'Email',
+        'contact.phone': 'Phone',
+        'contact.address': 'Address',
+        'contact.addressValue': 'Zhongguancun Science Park, Haidian District, Beijing',
+        
+        // Form
+        'form.name': 'Your Name',
+        'form.email': 'Email Address',
+        'form.company': 'Company Name',
+        'form.message': 'Your Requirements',
+        'form.submit': 'Send Message',
+        
+        // Footer
+        'footer.desc': 'Connect globally, create the future. NeuralEarth AI is dedicated to providing leading AI solutions for enterprises worldwide.',
+        'footer.products': 'Products',
+        'footer.solutions': 'Solutions',
+        'footer.sol1': 'Smart Customer Service',
+        'footer.sol2': 'Smart Retail',
+        'footer.sol3': 'Smart Manufacturing',
+        'footer.sol4': 'FinTech',
+        'footer.about': 'About Us',
+        'footer.about1': 'Company',
+        'footer.about2': 'News',
+        'footer.about3': 'Careers',
+        'footer.about4': 'Contact',
+        'footer.developers': 'Developers',
+        'footer.dev1': 'API Docs',
+        'footer.dev2': 'SDK Download',
+        'footer.dev3': 'Tech Blog',
+        'footer.dev4': 'Open Source',
+        'footer.privacy': 'Privacy Policy',
+        'footer.terms': 'Terms of Service',
+        'footer.cookies': 'Cookie Settings'
+    }
+};
+
+// 当前语言
+let currentLang = localStorage.getItem('language') || 'zh';
+
+// 切换语言
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    
+    // 更新所有带有 data-i18n 属性的元素
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+    });
+    
+    // 更新语言按钮状态
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    // 应用保存的语言
+    switchLanguage(currentLang);
+    
+    // 语言切换按钮事件
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            switchLanguage(btn.dataset.lang);
+        });
+    });
+    
+    // 初始化其他功能
+    initParticles();
+    initNavbar();
+    initCountUp();
+    initScrollAnimations();
+    initFormEffects();
+    initSmoothScroll();
+    initMobileMenu();
+    initNeuralNetwork();
+    initEarthAnimation();
+});
+
+/* ========================================
+   粒子背景
+   ======================================== */
+function initParticles() {
+    const container = document.getElementById('particles-container');
+    if (!container) return;
+    
+    const particleCount = 60;
+    
+    for (let i = 0; i < particleCount; i++) {
+        createParticle(container);
+    }
+}
+
+function createParticle(container) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    
+    const size = Math.random() * 3 + 1;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    particle.style.animationDelay = Math.random() * 20 + 's';
+    particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+    
+    container.appendChild(particle);
+}
+
+/* ========================================
+   导航栏滚动效果
+   ======================================== */
+function initNavbar() {
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
+    // 导航链接激活状态
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (window.pageYOffset >= sectionTop - 200) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').slice(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+/* ========================================
+   数字增长动画
+   ======================================== */
+function initCountUp() {
+    const stats = document.querySelectorAll('.stat-number');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseFloat(entry.target.dataset.target);
+                animateNumber(entry.target, target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    stats.forEach(stat => observer.observe(stat));
+}
+
+function animateNumber(element, target) {
+    const duration = 2000;
+    const startTime = performance.now();
+    const isDecimal = target % 1 !== 0;
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const current = target * easeOutQuart;
+        
+        if (isDecimal) {
+            element.textContent = current.toFixed(1);
+        } else {
+            element.textContent = Math.floor(current);
+        }
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    
+    requestAnimationFrame(update);
+}
+
+/* ========================================
+   滚动动画
+   ======================================== */
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll(
+        '.about-card, .tech-item, .product-card, .case-card, .section-header'
+    );
+    
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, index * 100);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    animatedElements.forEach(el => observer.observe(el));
+}
+
+/* ========================================
+   表单效果
+   ======================================== */
+function initFormEffects() {
+    const form = document.querySelector('.contact-form');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, textarea');
+    
+    inputs.forEach(input => {
+        if (input.value) {
+            input.classList.add('has-value');
+        }
+        
+        input.addEventListener('focus', () => {
+            input.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', () => {
+            if (!input.value) {
+                input.parentElement.classList.remove('focused');
+            }
+        });
+    });
+    
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        
+        const sendingText = currentLang === 'zh' ? '发送中...' : 'Sending...';
+        const successText = currentLang === 'zh' ? '发送成功!' : 'Sent Successfully!';
+        
+        btn.innerHTML = `<span>${sendingText}</span><i class="fas fa-spinner fa-spin"></i>`;
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            btn.innerHTML = `<span>${successText}</span><i class="fas fa-check"></i>`;
+            btn.style.background = '#00ff88';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                btn.disabled = false;
+                form.reset();
+            }, 2000);
+        }, 1500);
+    });
+}
+
+/* ========================================
+   平滑滚动
+   ======================================== */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            
+            if (target) {
+                const offsetTop = target.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+/* ========================================
+   移动端菜单
+   ======================================== */
+function initMobileMenu() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const navCta = document.querySelector('.nav-cta');
+    
+    if (!hamburger) return;
+    
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        
+        let mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (!mobileMenu) {
+            mobileMenu = document.createElement('div');
+            mobileMenu.className = 'mobile-menu';
+            mobileMenu.innerHTML = `
+                <div class="mobile-menu-content">
+                    ${navLinks ? navLinks.outerHTML : ''}
+                    ${navCta ? navCta.outerHTML : ''}
+                </div>
+            `;
+            document.body.appendChild(mobileMenu);
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .mobile-menu {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.98);
+                    backdrop-filter: blur(20px);
+                    z-index: 999;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                .mobile-menu.active {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                .mobile-menu-content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    gap: 30px;
+                }
+                .mobile-menu .nav-links {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 25px;
+                }
+                .mobile-menu .nav-links a {
+                    font-size: 1.5rem;
+                }
+                .mobile-menu .nav-cta {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        setTimeout(() => {
+            mobileMenu.classList.toggle('active');
+        }, 10);
+        
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+    });
+}
+
+/* ========================================
+   神经网络动画
+   ======================================== */
+function initNeuralNetwork() {
+    const svg = document.querySelector('.connections');
+    if (!svg) return;
+    
+    // 清除现有连接线
+    svg.innerHTML = `
+        <defs>
+            <linearGradient id="connGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#00f5ff;stop-opacity:0.3"/>
+                <stop offset="50%" style="stop-color:#00f5ff;stop-opacity:0.8"/>
+                <stop offset="100%" style="stop-color:#00f5ff;stop-opacity:0.3"/>
+            </linearGradient>
+        </defs>
+    `;
+    
+    const layers = document.querySelectorAll('.layer');
+    const nodePositions = [];
+    
+    layers.forEach((layer, layerIndex) => {
+        const nodes = layer.querySelectorAll('.node');
+        nodes.forEach((node, nodeIndex) => {
+            const rect = node.getBoundingClientRect();
+            const svgRect = svg.getBoundingClientRect();
+            nodePositions.push({
+                x: rect.left - svgRect.left + rect.width / 2,
+                y: rect.top - svgRect.top + rect.height / 2,
+                layer: layerIndex
+            });
+        });
+    });
+    
+    // 创建连接线
+    for (let i = 0; i < nodePositions.length; i++) {
+        for (let j = i + 1; j < nodePositions.length; j++) {
+            if (nodePositions[j].layer === nodePositions[i].layer + 1) {
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', nodePositions[i].x);
+                line.setAttribute('y1', nodePositions[i].y);
+                line.setAttribute('x2', nodePositions[j].x);
+                line.setAttribute('y2', nodePositions[j].y);
+                line.setAttribute('stroke', 'rgba(0, 245, 255, 0.2)');
+                line.setAttribute('stroke-width', '1');
+                
+                const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+                animate.setAttribute('attributeName', 'stroke-opacity');
+                animate.setAttribute('values', '0.1;0.5;0.1');
+                animate.setAttribute('dur', (Math.random() * 2 + 2) + 's');
+                animate.setAttribute('repeatCount', 'indefinite');
+                
+                line.appendChild(animate);
+                svg.appendChild(line);
+            }
+        }
+    }
+}
+
+/* ========================================
+   地球动画增强
+   ======================================== */
+function initEarthAnimation() {
+    // 鼠标跟随效果
+    const earthCore = document.querySelector('.earth-core');
+    if (earthCore) {
+        document.addEventListener('mousemove', (e) => {
+            const rect = earthCore.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const deltaX = (e.clientX - centerX) / 30;
+            const deltaY = (e.clientY - centerY) / 30;
+            
+            earthCore.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        });
+    }
+    
+    // 动态生成数据连接线
+    generateDataConnections();
+}
+
+function generateDataConnections() {
+    const svg = document.querySelector('.connections-svg');
+    if (!svg) return;
+    
+    // 清除现有路径
+    const existingPaths = svg.querySelectorAll('path');
+    existingPaths.forEach(p => p.remove());
+    
+    // 创建连接弧线
+    for (let i = 0; i < 8; i++) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const startAngle = (i * 45) * Math.PI / 180;
+        const endAngle = ((i * 45) + 180) * Math.PI / 180;
+        const radius = 180;
+        
+        const startX = 300 + Math.cos(startAngle) * radius;
+        const startY = 300 + Math.sin(startAngle) * radius;
+        const endX = 300 + Math.cos(endAngle) * radius;
+        const endY = 300 + Math.sin(endAngle) * radius;
+        
+        path.setAttribute('d', `M ${startX} ${startY} Q 300 300 ${endX} ${endY}`);
+        path.setAttribute('stroke', 'url(#dataLineGrad)');
+        path.setAttribute('stroke-width', '1');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('filter', 'url(#glow)');
+        path.style.animation = `draw-arc 4s ease-in-out ${i * 0.3}s infinite`;
+        
+        svg.appendChild(path);
+    }
+    
+    // 添加动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes draw-arc {
+            0% { stroke-dasharray: 0 1000; opacity: 0; }
+            50% { stroke-dasharray: 500 500; opacity: 1; }
+            100% { stroke-dasharray: 0 1000; opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+/* ========================================
+   视差效果
+   ======================================== */
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const earthSection = document.querySelector('.earth-section');
+    
+    if (earthSection && scrolled < window.innerHeight) {
+        earthSection.style.transform = `translateY(${scrolled * 0.1}px)`;
+    }
+});
+
+/* ========================================
+   光标跟随效果
+   ======================================== */
+(function() {
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    glow.style.cssText = `
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(0, 245, 255, 0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.3s ease;
+        opacity: 0;
+    `;
+    document.body.appendChild(glow);
+    
+    document.addEventListener('mousemove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+        glow.style.opacity = '1';
+    });
+    
+    document.addEventListener('mouseleave', () => {
+        glow.style.opacity = '0';
+    });
+})();
+
+/* ========================================
+   加载完成动画
+   ======================================== */
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+    
+    const heroText = document.querySelector('.hero-text');
+    const earthSection = document.querySelector('.earth-section');
+    
+    if (heroText) {
+        heroText.style.opacity = '0';
+        heroText.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            heroText.style.transition = 'all 0.8s ease';
+            heroText.style.opacity = '1';
+            heroText.style.transform = 'translateY(0)';
+        }, 300);
+    }
+    
+    if (earthSection) {
+        earthSection.style.opacity = '0';
+        earthSection.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            earthSection.style.transition = 'all 1.2s ease';
+            earthSection.style.opacity = '1';
+            earthSection.style.transform = 'scale(1)';
+        }, 600);
+    }
+});
+
+console.log('🌍 NeuralEarth AI Website Loaded');
