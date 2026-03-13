@@ -19,7 +19,7 @@
 
 ---
 
-![Portfolio Preview](https://via.placeholder.com/800x400?text=Portfolio+Preview)
+
 
 ## ✨ 特性
 
