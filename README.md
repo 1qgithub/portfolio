@@ -137,8 +137,6 @@ portfolio/
 ├── style.css               # 样式文件
 ├── script.js               # 交互脚本
 ├── README.md               # 项目说明（本文件）
-├── QUICKSTART.md           # 快速开始指南
-├── DEPLOYMENT_GUIDE.md     # 详细部署指南
 └── .github/
     └── workflows/
         └── deploy.yml      # 自动部署配置
