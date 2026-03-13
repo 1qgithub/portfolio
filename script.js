@@ -86,22 +86,72 @@ if (aboutSection) {
     statsObserver.observe(aboutSection);
 }
 
-// 添加打字效果
+// 添加打字效果 - 改进版本，正确处理HTML标签
 const heroTitle = document.querySelector('.hero-content h1');
 if (heroTitle) {
-    const text = heroTitle.innerHTML;
-    heroTitle.innerHTML = '';
-    let i = 0;
+    // 提取纯文本内容
+    const textContent = heroTitle.textContent;
+    const innerHTML = heroTitle.innerHTML;
     
-    function typeWriter() {
-        if (i < text.length) {
-            heroTitle.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
+    // 检查是否有highlight span
+    const highlightMatch = innerHTML.match(/<span class="highlight">(.+?)<\/span>/);
+    const highlightText = highlightMatch ? highlightMatch[1] : '';
+    
+    if (highlightText && textContent.includes(highlightText)) {
+        // 找到高亮文字前的文本
+        const beforeHighlight = textContent.split(highlightText)[0];
+        const afterHighlight = textContent.split(highlightText)[1] || '';
+        
+        heroTitle.innerHTML = '';
+        let charIndex = 0;
+        let phase = 'before'; // 'before', 'highlight', 'after'
+        
+        function typeWriter() {
+            if (phase === 'before' && charIndex < beforeHighlight.length) {
+                heroTitle.textContent += beforeHighlight.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 50);
+            } else if (phase === 'before') {
+                // 进入高亮阶段
+                phase = 'highlight';
+                charIndex = 0;
+                // 创建高亮span
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                heroTitle.appendChild(span);
+                setTimeout(typeWriter, 50);
+            } else if (phase === 'highlight' && charIndex < highlightText.length) {
+                heroTitle.querySelector('.highlight').textContent += highlightText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 50);
+            } else if (phase === 'highlight') {
+                // 进入最后阶段
+                phase = 'after';
+                charIndex = 0;
+                setTimeout(typeWriter, 50);
+            } else if (phase === 'after' && charIndex < afterHighlight.length) {
+                heroTitle.appendChild(document.createTextNode(afterHighlight.charAt(charIndex)));
+                charIndex++;
+                setTimeout(typeWriter, 50);
+            }
         }
+        
+        setTimeout(typeWriter, 500);
+    } else {
+        // 没有高亮文字，使用简单打字效果
+        heroTitle.innerHTML = '';
+        let i = 0;
+        
+        function simpleTypeWriter() {
+            if (i < textContent.length) {
+                heroTitle.textContent += textContent.charAt(i);
+                i++;
+                setTimeout(simpleTypeWriter, 50);
+            }
+        }
+        
+        setTimeout(simpleTypeWriter, 500);
     }
-    
-    setTimeout(typeWriter, 500);
 }
 
 // 项目分类筛选
