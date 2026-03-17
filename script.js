@@ -185,6 +185,10 @@ const projectDemos = {
     'ai-website': {
         title: 'NeuralEarth AI 官网演示',
         url: 'projects/ai-website/index.html'
+    },
+    'data-visualizer': {
+        title: 'DataViz Pro - 数据可视化工具',
+        url: 'projects/data-visualizer/index.html'
     }
 };
 

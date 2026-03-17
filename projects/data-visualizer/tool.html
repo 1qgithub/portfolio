@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据可视化工具</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js 图表库 - 本地版本 -->
+    <script src="libs/chart.min.js"></script>
+    <!-- SheetJS Excel解析库 - 本地版本 -->
+    <script src="libs/xlsx.min.js"></script>
+    <!-- jsPDF PDF生成库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="home-link" title="返回首页">
+                    <h1><i class="fas fa-chart-line"></i></h1>
+                    <span class="sidebar-title">数据可视化</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a class="nav-item active" data-section="upload" id="navUpload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>数据导入</span>
+                </a>
+                <a class="nav-item" data-section="stats" id="navStats">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>数据统计</span>
+                </a>
+                <a class="nav-item" data-section="data" id="navData">
+                    <i class="fas fa-table"></i>
+                    <span>数据预览</span>
+                </a>
+                <a class="nav-item" data-section="aggregate" id="navAggregate">
+                    <i class="fas fa-layer-group"></i>
+                    <span>数据聚合</span>
+                </a>
+                <a class="nav-item" data-section="config" id="navConfig">
+                    <i class="fas fa-cog"></i>
+                    <span>图表配置</span>
+                </a>
+                <a class="nav-item" data-section="chart" id="navChart">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>图表展示</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="index.html" class="btn btn-icon" title="返回首页">
+                    <i class="fas fa-home"></i>
+                </a>
+                <button class="btn btn-icon" id="themeToggle" title="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <main class="main-content">
+            <!-- 数据导入模块 -->
+            <section class="content-section active" id="sectionUpload">
+                <div class="section-header">
+                    <h2><i class="fas fa-cloud-upload-alt"></i> 数据导入</h2>
+                    <p class="section-desc">上传 Excel 或 CSV 文件开始数据分析</p>
+                </div>
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h3>拖拽文件到此处</h3>
+                    <p>或 <span class="upload-link">点击选择文件</span></p>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
+                    <p class="file-types">支持格式: .xlsx, .xls, .csv</p>
+                </div>
+            </section>
+
+            <!-- 数据统计模块 -->
+            <section class="content-section" id="sectionStats">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-bar"></i> 数据统计</h2>
+                    <p class="section-desc">数据概览与关键指标</p>
+                </div>
+                <div class="stats-grid" id="statsGrid"></div>
+            </section>
+
+            <!-- 数据预览模块 -->
+            <section class="content-section" id="sectionData">
+                <div class="section-header">
+                    <h2><i class="fas fa-table"></i> 数据预览</h2>
+                    <p class="section-desc">查看和筛选数据</p>
+                </div>
+                
+                <!-- 数据筛选区域 -->
+                <div class="filter-section">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label><i class="fas fa-search"></i> 搜索</label>
+                            <input type="text" id="searchInput" class="filter-input" placeholder="搜索数据...">
+                        </div>
+                        <div class="filter-group">
+                            <label><i class="fas fa-sort"></i> 排序</label>
+                            <select id="sortColumn" class="filter-select">
+                                <option value="">选择列</option>
+                            </select>
+                            <select id="sortOrder" class="filter-select">
+                                <option value="asc">升序</option>
+                                <option value="desc">降序</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary" id="applyFilterBtn">
+                            <i class="fas fa-filter"></i> 应用
+                        </button>
+                        <button class="btn btn-secondary" id="resetFilterBtn">
+                            <i class="fas fa-undo"></i> 重置
+                        </button>
+                        <button class="btn btn-danger" id="clearDataBtn">
+                            <i class="fas fa-trash"></i> 清除
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-info">
+                    <span id="tableInfo">显示 0 / 0 行</span>
+                </div>
+                <div class="table-container">
+                    <table id="dataTable" class="data-table">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 数据聚合模块 -->
+            <section class="content-section" id="sectionAggregate">
+                <div class="section-header">
+                    <h2><i class="fas fa-layer-group"></i> 数据聚合</h2>
+                    <p class="section-desc">分组统计与数据汇总</p>
+                </div>
+                <div class="aggregate-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="groupColumn">分组列</label>
+                            <select id="groupColumn" class="form-select">
+                                <option value="">选择分组列</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="valueColumn">值列</label>
+                            <select id="valueColumn" class="form-select">
+                                <option value="">选择值列</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="aggregateFunc">聚合函数</label>
+                            <select id="aggregateFunc" class="form-select">
+                                <option value="sum">求和</option>
+                                <option value="avg">平均值</option>
+                                <option value="count">计数</option>
+                                <option value="max">最大值</option>
+                                <option value="min">最小值</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="applyAggregateBtn">
+                            <i class="fas fa-calculator"></i> 应用聚合
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 图表配置模块 -->
+            <section class="content-section" id="sectionConfig">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> 图表配置</h2>
+                    <p class="section-desc">选择图表类型和配置参数</p>
+                </div>
+                
+                <!-- 图表类型选择 -->
+                <div class="chart-type-selector">
+                    <label>图表类型</label>
+                    <div class="chart-types">
+                        <button class="chart-type-btn active" data-type="bar" title="柱状图">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>柱状图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="line" title="折线图">
+                            <i class="fas fa-chart-line"></i>
+                            <span>折线图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="pie" title="饼图">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>饼图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="doughnut" title="环形图">
+                            <i class="fas fa-circle-notch"></i>
+                            <span>环形图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="radar" title="雷达图">
+                            <i class="fas fa-spider"></i>
+                            <span>雷达图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="polarArea" title="极地图">
+                            <i class="fas fa-bullseye"></i>
+                            <span>极地图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="scatter" title="散点图">
+                            <i class="fas fa-braille"></i>
+                            <span>散点图</span>
+                        </button>
+                        <button class="chart-type-btn" data-type="area" title="面积图">
+                            <i class="fas fa-chart-area"></i>
+                            <span>面积图</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="config-row">
+                    <div class="config-group">
+                        <label for="xAxis">X轴数据</label>
+                        <select id="xAxis" class="config-select"></select>
+                    </div>
+                    <div class="config-group">
+                        <label for="chartTitle">图表标题</label>
+                        <input type="text" id="chartTitle" class="config-input" placeholder="输入图表标题">
+                    </div>
+                </div>
+
+                <!-- 多系列数据配置 -->
+                <div class="multi-series-config">
+                    <div class="series-header">
+                        <label>Y轴数据系列（可多选）</label>
+                        <button class="btn btn-sm btn-secondary" id="selectAllSeries">
+                            <i class="fas fa-check-double"></i> 全选
+                        </button>
+                    </div>
+                    <div class="series-checkboxes" id="seriesCheckboxes"></div>
+                </div>
+
+                <!-- 高级配置 -->
+                <div class="advanced-config">
+                    <div class="config-group">
+                        <label for="colorScheme">配色方案</label>
+                        <select id="colorScheme" class="config-select">
+                            <option value="default">默认</option>
+                            <option value="pastel">柔和色</option>
+                            <option value="vibrant">鲜艳色</option>
+                            <option value="cool">冷色调</option>
+                            <option value="warm">暖色调</option>
+                            <option value="monochrome">单色系</option>
+                        </select>
+                    </div>
+                    <div class="config-group">
+                        <label for="chartAnimation">动画效果</label>
+                        <select id="chartAnimation" class="config-select">
+                            <option value="default">默认</option>
+                            <option value="fast">快速</option>
+                            <option value="slow">慢速</option>
+                            <option value="none">无动画</option>
+                        </select>
+                    </div>
+                    <div class="config-group">
+                        <label for="chartLegend">图例位置</label>
+                        <select id="chartLegend" class="config-select">
+                            <option value="top">顶部</option>
+                            <option value="bottom">底部</option>
+                            <option value="left">左侧</option>
+                            <option value="right">右侧</option>
+                            <option value="none">隐藏</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="config-actions">
+                    <button class="btn btn-primary btn-lg" id="generateChartBtn">
+                        <i class="fas fa-magic"></i> 生成图表
+                    </button>
+                </div>
+            </section>
+
+            <!-- 图表展示模块 -->
+            <section class="content-section" id="sectionChart">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-pie"></i> 图表展示</h2>
+                    <p class="section-desc">查看和导出图表</p>
+                </div>
+                
+                <!-- 导出配置面板 -->
+                <div class="export-panel" id="exportPanel">
+                    <div class="export-row">
+                        <div class="export-group">
+                            <label>预设尺寸</label>
+                            <select id="exportPreset" class="export-select">
+                                <option value="custom">自定义</option>
+                                <option value="1080p">1080p (1920×1080)</option>
+                                <option value="2k">2K (2560×1440)</option>
+                                <option value="4k">4K (3840×2160)</option>
+                            </select>
+                        </div>
+                        <div class="export-group">
+                            <label>宽度 (px)</label>
+                            <input type="number" id="exportWidth" class="export-input" value="1920" min="400" max="10000">
+                        </div>
+                        <div class="export-group">
+                            <label>高度 (px)</label>
+                            <input type="number" id="exportHeight" class="export-input" value="1080" min="300" max="10000">
+                        </div>
+                        <div class="export-group">
+                            <label>DPI</label>
+                            <select id="exportDpi" class="export-select">
+                                <option value="72">72 (屏幕)</option>
+                                <option value="96">96 (网页)</option>
+                                <option value="150" selected>150 (打印)</option>
+                                <option value="300">300 (高清印刷)</option>
+                                <option value="600">600 (专业印刷)</option>
+                            </select>
+                        </div>
+                        <div class="export-group">
+                            <label>格式</label>
+                            <select id="exportFormat" class="export-select">
+                                <option value="png">PNG (位图)</option>
+                                <option value="jpeg">JPG (压缩)</option>
+                                <option value="svg">SVG (矢量图)</option>
+                                <option value="pdf">PDF (文档)</option>
+                            </select>
+                        </div>
+                        <div class="export-group">
+                            <label>质量</label>
+                            <input type="range" id="exportQuality" class="export-range" value="95" min="50" max="100">
+                            <span id="qualityValue">95%</span>
+                        </div>
+                    </div>
+                    <div class="export-row export-footer">
+                        <div class="export-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span id="exportInfoText">输出: 1920 × 1080 px | DPI: 150 | 打印: 32.5 × 18.3 cm</span>
+                        </div>
+                        <div class="export-buttons">
+                            <button class="btn btn-primary" id="downloadChartBtn">
+                                <i class="fas fa-download"></i> 导出图片
+                            </button>
+                            <button class="btn btn-secondary" id="downloadPdfBtn">
+                                <i class="fas fa-file-pdf"></i> 导出PDF
+                            </button>
+                            <button class="btn btn-secondary" id="downloadSvgBtn">
+                                <i class="fas fa-vector-square"></i> 导出SVG
+                            </button>
+                            <button class="btn btn-secondary" id="exportDataBtn">
+                                <i class="fas fa-file-export"></i> 导出数据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="chartCanvas"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 加载提示 -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>正在处理数据...</p>
+        </div>
+    </div>
+
+    <!-- 消息提示 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
